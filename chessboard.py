@@ -2,8 +2,6 @@ __author__ = 'BohdanPidopryhora'
 
 BOARD_SIZE = 8
 EMPTY_CELL = 0
-VERTICAL_NAMES = '87654321'
-HORIZONTAL_NAMES = 'abcdefgh'
 
 
 def init_board():
@@ -14,11 +12,13 @@ def init_board():
 
 
 def convert_indexes_to_coords(row, column):
-    """Converts index
+    """this function convert index -1
     >>> convert_indexes_to_coords(7, 0)
     'a1'
     >>> convert_indexes_to_coords(0, 7)
     'h8'
     """
+    VERTICAL_NAMES = '87654321'
+    HORIZONTAL_NAMES = 'abcdefgh'
     return HORIZONTAL_NAMES[column] + VERTICAL_NAMES[row]
 
