@@ -1,8 +1,7 @@
 __author__ = 'rosto'
 
-
 def ches_indexes(ver, hor):
-    """this function convert index -1
+	"""this function convert index -1
 	>>> ches_indexes(1, 1)
 	'a1'
 	"""
