@@ -22,3 +22,12 @@ def convert_indexes_to_coords(row, column):
     """
     return HORIZONTAL_NAMES[column] + VERTICAL_NAMES[row]
 
+
+def convert_coords_to_indexes(coordinate):
+    """Converts chess coordinates to list indexes
+    >>> convert_coords_to_indexes("e2")
+    (6, 4)
+    >>> convert_coords_to_indexes("h8")
+    (0, 7)
+    """
+    return VERTICAL_NAMES.index(coordinate[1]), HORIZONTAL_NAMES.index(coordinate[0])
