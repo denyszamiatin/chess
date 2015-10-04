@@ -24,7 +24,7 @@ def convert_indexes_to_coords(row, column):
 
 
 def convert_coords_to_indexes(coordinate):
-    """Converts chess coordinates to list indexe
+    """Converts chess coordinates to list indexes
     >>> convert_coords_to_indexes("e2")
     (6, 4)
     >>> convert_coords_to_indexes("h8")
