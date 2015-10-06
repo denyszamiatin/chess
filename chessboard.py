@@ -1,7 +1,7 @@
-__author__ = 'BohdanPidopryhora'
-
 BOARD_SIZE = 8
 EMPTY_CELL = 0
+VERTICAL_NAMES = '87654321'
+HORIZONTAL_NAMES = 'abcdefgh'
 
 
 def init_board():
@@ -18,16 +18,57 @@ def convert_indexes_to_coords(row, column):
     >>> convert_indexes_to_coords(0, 7)
     'h8'
     """
-    VERTICAL_NAMES = '87654321'
-    HORIZONTAL_NAMES = 'abcdefgh'
     return HORIZONTAL_NAMES[column] + VERTICAL_NAMES[row]
 
 
 def convert_coords_to_indexes(coordinate):
     """Converts chess coordinates to list indexes
     >>> convert_coords_to_indexes("e2")
-    (6, 4)
+    [6, 4]
     >>> convert_coords_to_indexes("h8")
-    (0, 7)
+    [0, 7]
     """
-    return VERTICAL_NAMES.index(coordinate[1]), HORIZONTAL_NAMES.index(coordinate[0])
+    try:
+        return [
+            VERTICAL_NAMES.index(coordinate[1]),
+            HORIZONTAL_NAMES.index(coordinate[0])
+        ]
+    except (ValueError, IndexError):
+        raise ValueError("Invalid coords")
+
+
+def create_default_position(board):
+    """
+    Set up chess board
+    White is uppercase
+    p - pawns
+    r - rook
+    k - knight
+    b - bishop
+    q - queen
+    m - king
+    """
+    board[0] = ['r', 'k', 'b', 'q', 'm', 'b', 'k', 'r']
+    board[1] = ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p']
+    board[6] = ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
+    board[7] = ['R', 'K', 'B', 'Q', 'M', 'B', 'K', 'R']
+
+    return board
+
+
+def get_figure(board, row, column):
+    return board[row][column]
+
+
+if __name__ == '__main__':
+    board = create_default_position(init_board())
+    while True:
+        action = raw_input("?")
+        if action in 'Qq':
+            break
+        try:
+            indexes = convert_coords_to_indexes(action)
+        except ValueError as e:
+            print e
+            continue
+        print get_figure(board, indexes[0], indexes[1])
