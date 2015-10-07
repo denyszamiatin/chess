@@ -60,6 +60,21 @@ def get_figure(board, row, column):
     return board[row][column]
 
 
+def print_board():
+    """
+    Print chessboard
+    """
+    figure_list = []
+    board = create_default_position(init_board())
+    for i in VERTICAL_NAMES:
+        for j in VERTICAL_NAMES:
+            figure = get_figure(board, int(i) - 1, int(j) - 1)
+            figure_list.append(figure)
+    for item in range(0, 64):
+        if item % 8 == 0:
+            print figure_list[item: item + 8]
+
+
 if __name__ == '__main__':
     board = create_default_position(init_board())
     while True:
