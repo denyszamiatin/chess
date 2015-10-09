@@ -76,19 +76,32 @@ def print_board():
 
 
 def check_pawn_move(start,dest):
-    """
-    Cheking - is move availible for pawn
-    returns True or False
-    >>>check_pawn_move([6,4],[5,4])
-    >>>True
-    >>>check_pawn_move([6,4],[1,4])
-    >>>False
-    """
+#    """
+#    Cheking - is move availible for pawn
+#    returns True or False
+#    >>>check_pawn_move([6,4],[5,4])
+#    >>>True
+#    >>>check_pawn_move([6,4],[1,4])
+#    >>>False
+#    """
 
     return get_figure(board, start[0], start[1]) in "Pp" and get_figure(board, dest[0], dest[1]) == 0 and \
            start[0] == dest[0] and start[1] - dest[1] == 0
 
 
+def check_gorizontal(coords):
+    """
+    Get horizontal figure
+    >>> check_gorizontal('a1')
+    ['R', 'K', 'B', 'Q', 'M', 'B', 'K', 'R']
+    >>> check_gorizontal('a2')
+    ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
+    >>> check_gorizontal('a6')
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    """
+#   this is create test board
+    board = create_default_position(init_board())
+    return board[convert_coords_to_indexes(coords)[0]]
 
 
 
