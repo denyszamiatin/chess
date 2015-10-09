@@ -75,6 +75,23 @@ def print_board():
             print figure_list[item: item + 8]
 
 
+def check_pawn_move(start,dest):
+    """
+    Cheking - is move availible for pawn
+    returns True or False
+    >>>check_pawn_move([6,4],[5,4])
+    >>>True
+    >>>check_pawn_move([6,4],[1,4])
+    >>>False
+    """
+
+    return get_figure(board, start[0], start[1]) in "Pp" and get_figure(board, dest[0], dest[1]) == 0 and \
+           start[0] == dest[0] and start[1] - dest[1] == 0
+
+
+
+
+
 if __name__ == '__main__':
     board = create_default_position(init_board())
     while True:
