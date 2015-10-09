@@ -1,5 +1,5 @@
 BOARD_SIZE = 8
-EMPTY_CELL = 0
+EMPTY_CELL = '.'
 VERTICAL_NAMES = '87654321'
 HORIZONTAL_NAMES = 'abcdefgh'
 
@@ -60,53 +60,49 @@ def get_figure(board, row, column):
     return board[row][column]
 
 
-def print_board():
+def print_board(board):
     """
     Print chessboard
     """
-    figure_list = []
-    board = create_default_position(init_board())
-    for i in VERTICAL_NAMES:
-        for j in VERTICAL_NAMES:
-            figure = get_figure(board, int(i) - 1, int(j) - 1)
-            figure_list.append(figure)
-    for item in range(0, 64):
-        if item % 8 == 0:
-            print figure_list[item: item + 8]
+    for i in range(BOARD_SIZE):
+        for j in range(BOARD_SIZE):
+            print get_figure(board, i, j),
+        print
 
 
-def check_pawn_move(start,dest):
-#    """
-#    Cheking - is move availible for pawn
-#    returns True or False
-#    >>>check_pawn_move([6,4],[5,4])
-#    >>>True
-#    >>>check_pawn_move([6,4],[1,4])
-#    >>>False
-#    """
+def check_pawn_move(board, start, dest):
+    """
+    Cheking - is move availible for pawn
+    returns True or False
+    >>> board = create_default_position(init_board())
+    >>> check_pawn_move(board, [6,4],[5,4])
+    True
+    >>> check_pawn_move(board, [6,4],[1,4])
+    False
+    """
+    return get_figure(board, start[0], start[1]) in "Pp" and \
+           get_figure(board, dest[0], dest[1]) == EMPTY_CELL and \
+           start[1] == dest[1] and \
+           abs(start[0] - dest[0]) == 1
 
-    return get_figure(board, start[0], start[1]) in "Pp" and get_figure(board, dest[0], dest[1]) == 0 and \
-           start[0] == dest[0] and start[1] - dest[1] == 0
 
-
-
-def check_horizontal(coords):
+def check_horizontal(board, coords):
     """
     Get horizontal figure
-    >>> check_horizontal('a1')
+    >>> board = create_default_position(init_board())
+    >>> check_horizontal(board, 'a1')
     ['R', 'K', 'B', 'Q', 'M', 'B', 'K', 'R']
-    >>> check_horizontal('a2')
+    >>> check_horizontal(board, 'a2')
     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
-    >>> check_horizontal('a6')
-    [0, 0, 0, 0, 0, 0, 0, 0]
+    >>> check_horizontal(board, 'a6')
+    ['.', '.', '.', '.', '.', '.', '.', '.']
     """
-#   this line creates check board - drop it after tests
-    board = create_default_position(init_board())
     return board[convert_coords_to_indexes(coords)[0]]
 
 if __name__ == '__main__':
     board = create_default_position(init_board())
     while True:
+        print_board(board)
         action = raw_input("?")
         if action in 'Qq':
             break
