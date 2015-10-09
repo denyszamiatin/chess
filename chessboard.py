@@ -100,7 +100,7 @@ def check_horizontal(coords):
     >>> check_horizontal('a6')
     [0, 0, 0, 0, 0, 0, 0, 0]
     """
-#   this line creates check board - drop it after test
+#   this line creates check board - drop it after tests
     board = create_default_position(init_board())
     return board[convert_coords_to_indexes(coords)[0]]
 
