@@ -99,6 +99,65 @@ def check_horizontal(board, coords):
     """
     return board[convert_coords_to_indexes(coords)[0]]
 
+
+def check_diagonal(board, row, column):
+
+i = row
+j = column
+while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
+    i += 1
+    j += 1
+    if i == 8 or i == -1:
+        break
+    if j == 8 or j == -1:
+        break
+
+    diagonal_result1.append(get_figure(board,i,j))
+
+i = row
+j = column
+while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
+    i += 1
+    j -= 1
+    if i == 8 or i == -1:
+        break
+    if j == 8 or j == -1:
+        break
+    diagonal_result2.append(get_figure(board,i,j))
+
+i = row
+j = column
+while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
+    i -= 1
+    j += 1
+    if i == 8 or i == -1:
+        break
+    if j == 8 or j == -1:
+        break
+    diagonal_result3.append(get_figure(board,i,j))
+
+i = row
+j = column
+while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
+    i -= 1
+    j -= 1
+    if i == 8 or i == -1:
+        break
+    if j == 8 or j == -1:
+        break
+    diagonal_result4.append(get_figure(board,i,j))
+
+
+#print diagonal_result1
+#print diagonal_result2
+#print diagonal_result3
+#print diagonal_result4
+
+diagonal_result = diagonal_result1 + diagonal_result2 + diagonal_result2 + diagonal_result3
+
+return diagonal_result
+
+
 if __name__ == '__main__':
     board = create_default_position(init_board())
     while True:
