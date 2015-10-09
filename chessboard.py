@@ -60,6 +60,41 @@ def get_figure(board, row, column):
     return board[row][column]
 
 
+def get_diagonal(board, row, column):
+    i = row
+    j = column
+    diagonal_result = []
+    while 0 <= i < BOARD_SIZE and 0 <= j < BOARD_SIZE:
+        i += 1
+        j += 1
+        diagonal_result.append(get_figure(board,i,j))
+
+    i = row
+    j = column
+    diagonal_result = []
+    while 0 <= i < BOARD_SIZE and 0 <= j < BOARD_SIZE:
+        i += 1
+        j -= 1
+        diagonal_result.append(get_figure(board,i,j))
+
+    i = row
+    j = column
+    diagonal_result = []
+    while 0 <= i < BOARD_SIZE and 0 <= j < BOARD_SIZE:
+        i -= 1
+        j += 1
+        diagonal_result.append(get_figure(board,i,j))
+
+    i = row
+    j = column
+    diagonal_result = []
+    while 0 <= i < BOARD_SIZE and 0 <= j < BOARD_SIZE:
+        i -= 1
+        j -= 1
+        diagonal_result.append(get_figure(board,i,j))
+
+    return diagonal_result
+
 def print_board():
     """
     Print chessboard
@@ -88,6 +123,63 @@ def check_pawn_move(start,dest):
     return get_figure(board, start[0], start[1]) in "Pp" and get_figure(board, dest[0], dest[1]) == 0 and \
            start[0] == dest[0] and start[1] - dest[1] == 0
 
+
+def check_diagonal(board, row, column):
+
+i = row
+j = column
+while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
+    i += 1
+    j += 1
+    if i == 8 or i == -1:
+        break
+    if j == 8 or j == -1:
+        break
+
+    diagonal_result1.append(get_figure(board,i,j))
+
+i = row
+j = column
+while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
+    i += 1
+    j -= 1
+    if i == 8 or i == -1:
+        break
+    if j == 8 or j == -1:
+        break
+    diagonal_result2.append(get_figure(board,i,j))
+
+i = row
+j = column
+while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
+    i -= 1
+    j += 1
+    if i == 8 or i == -1:
+        break
+    if j == 8 or j == -1:
+        break
+    diagonal_result3.append(get_figure(board,i,j))
+
+i = row
+j = column
+while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
+    i -= 1
+    j -= 1
+    if i == 8 or i == -1:
+        break
+    if j == 8 or j == -1:
+        break
+    diagonal_result4.append(get_figure(board,i,j))
+
+
+#print diagonal_result1
+#print diagonal_result2
+#print diagonal_result3
+#print diagonal_result4
+
+diagonal_result = diagonal_result1 + diagonal_result2 + diagonal_result2 + diagonal_result3
+
+return diagonal_result
 
 
 
