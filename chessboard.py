@@ -86,19 +86,6 @@ def check_pawn_move(board, start, dest):
            abs(start[0] - dest[0]) == 1
 
 
-def check_horizontal(board, coords):
-    """
-    Get horizontal figure
-    >>> board = create_default_position(init_board())
-    >>> check_horizontal(board, 'a1')
-    ['R', 'K', 'B', 'Q', 'M', 'B', 'K', 'R']
-    >>> check_horizontal(board, 'a2')
-    ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
-    >>> check_horizontal(board, 'a6')
-    ['.', '.', '.', '.', '.', '.', '.', '.']
-    """
-    return board[convert_coords_to_indexes(coords)[0]]
-
 def check_vertical(board, coords):
     """
     Get horizontal figure
@@ -119,6 +106,29 @@ def check_vertical(board, coords):
         i += 1
     return vertical
 
+
+def check_horizontal(board, coordinate):
+    """
+    Get figures from horizontal
+    >>> board = create_default_position(init_board())
+    >>> check_horizontal(board, 'e2')
+    {(6, 4): 'P', (6, 7): 'P', (6, 6): 'P', (6, 1): 'P', (6, 0): 'P', (6, 3): 'P', (6, 2): 'P', (6, 5): 'P'}
+    >>> check_horizontal(board, 'e3')
+    {}
+    >>> check_horizontal(board, 'a8')
+    {(0, 1): 'k', (0, 0): 'r', (0, 7): 'r', (0, 6): 'k', (0, 5): 'b', (0, 4): 'm', (0, 3): 'q', (0, 2): 'b'}
+    """
+
+    figures_on_horizontal = {}
+    row, column = convert_coords_to_indexes(coordinate)
+
+    for column in range(0, BOARD_SIZE):
+        figure = get_figure(board, row, column)
+
+        if figure != '.':
+            figures_on_horizontal[(row, column)] = figure
+
+    return figures_on_horizontal
 
 
 def check_diagonal(board, row, column):
