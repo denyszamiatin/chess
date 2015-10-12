@@ -70,6 +70,22 @@ def print_board(board):
         print
 
 
+def check_is_move_valid (board, start, dest):
+    """
+    Cheking - is move valid for black or White pawn
+    returns True or False
+    >>> board = create_default_position(init_board())
+    >>> check_is_move_valid (board, [6,4],[5,4])
+    True
+    >>> check_is_move_valid (board, [7,4],[5,4])
+    False
+    """
+    return get_figure(board, start[0], start[1]) in "P" and \
+           start[0] - dest[0] == 1 or \
+           get_figure(board, start[0], start[1]) in "p" and \
+           start[0] - dest[0] == -1
+
+
 def check_pawn_move(board, start, dest):
     """
     Cheking - is move availible for pawn
@@ -80,10 +96,11 @@ def check_pawn_move(board, start, dest):
     >>> check_pawn_move(board, [6,4],[1,4])
     False
     """
-    return get_figure(board, start[0], start[1]) in "Pp" and \
+    return check_is_move_valid (board, start, dest) and \
            get_figure(board, dest[0], dest[1]) == EMPTY_CELL and \
-           start[1] == dest[1] and \
-           abs(start[0] - dest[0]) == 1
+           start[1] == dest[1]
+
+
 
 
 def check_vertical(board, coords):
