@@ -100,12 +100,37 @@ def check_pawn_move(board, start, dest):
            get_figure(board, dest[0], dest[1]) == EMPTY_CELL and \
            start[1] == dest[1]
 
-
+def check_first_pawn_move(board, start, dest):
+    """
+    Cheking - is first pawn move availible
+    returns True or False
+    >>> board = create_default_position(init_board())
+    >>> check_first_pawn_move(board, [6,4],[4,4])
+    True
+    >>> check_first_pawn_move(board, [6,4],[5,4])
+    True
+    >>> check_first_pawn_move(board, [6,4],[1,4])
+    False
+    >>> check_first_pawn_move(board, [6,4],[3,4])
+    False
+    >>> check_first_pawn_move(board, [6,4],[3,3])
+    False
+    """
+    check_str = '(pawn == "{}" and start[0] == {}) \
+                  and (dest[0] == {} or dest[0] == {}) \
+                  and start[1] == dest[1]'
+    pawn = get_figure(board, start[0], start[1])
+    if eval(check_str.format('P', 6, 5, 4)):
+        return get_figure(board, dest[0], dest[1]) == EMPTY_CELL
+    if eval(check_str.format('p', 1, 2, 3)):
+        return get_figure(board, dest[0], dest[1]) == EMPTY_CELL
+    else:
+        return False
 
 
 def check_vertical(board, coords):
     """
-    Get horizontal figure
+    Get figures from vertical
     >>> board = create_default_position(init_board())
     >>> check_vertical(board, 'a1')
     {'p': [1, 0], 'R': [7, 0], 'r': [0, 0], 'P': [6, 0]}
