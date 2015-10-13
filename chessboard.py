@@ -70,35 +70,49 @@ def print_board(board):
         print
 
 
-def check_is_move_valid (board, start, dest):
+def is_white(board, cell):
+    return get_figure(board, cell[0], cell[1]).isupper()
+
+
+def is_black(board, cell):
+    return get_figure(board, cell[0], cell[1]).islower()
+
+
+def get_pawn_direction (board, cell):
     """
     Cheking - is move valid for black or White pawn
     returns True or False
-    >>> board = create_default_position(init_board())
-    >>> check_is_move_valid (board, [6,4],[5,4])
-    True
-    >>> check_is_move_valid (board, [7,4],[5,4])
-    False
     """
-    return get_figure(board, start[0], start[1]) in "P" and \
-           start[0] - dest[0] == 1 or \
-           get_figure(board, start[0], start[1]) in "p" and \
-           start[0] - dest[0] == -1
+    return -1 if is_white(board, cell) else 1
 
 
-def check_pawn_move(board, start, dest):
-    """
-    Cheking - is move availible for pawn
-    returns True or False
-    >>> board = create_default_position(init_board())
-    >>> check_pawn_move(board, [6,4],[5,4])
-    True
-    >>> check_pawn_move(board, [6,4],[1,4])
-    False
-    """
-    return check_is_move_valid (board, start, dest) and \
-           get_figure(board, dest[0], dest[1]) == EMPTY_CELL and \
-           start[1] == dest[1]
+def is_pawn(board, dest):
+    return get_figure(board, dest[0], dest[1]) in "Pp"
+
+
+def is_empty_cell(board, dest):
+    return get_figure(board, dest[0], dest[1]) == EMPTY_CELL
+
+
+def is_vertical_move(start, dest):
+    return start[1] == dest[1]
+
+
+def get_vertical_distance(start, dest):
+    return dest[0] - start[0]
+
+
+def is_two_cell_move(board, dest, start):
+    return all((
+        get_vertical_distance(start, dest) == get_pawn_direction(board, start) * 2,
+        start[0] in (1, 6),
+        is_empty_cell(board, (start[0] + get_pawn_direction(board, start), start[1]))
+    ))
+
+
+def is_one_cell_move(board, dest, start):
+    return get_vertical_distance(start, dest) == get_pawn_direction(board, start)
+
 
 def check_first_pawn_move(board, start, dest):
     """
@@ -106,6 +120,8 @@ def check_first_pawn_move(board, start, dest):
     returns True or False
     >>> board = create_default_position(init_board())
     >>> check_first_pawn_move(board, [6,4],[4,4])
+    True
+    >>> check_first_pawn_move(board, [1,4],[3,4])
     True
     >>> check_first_pawn_move(board, [6,4],[5,4])
     True
@@ -116,16 +132,15 @@ def check_first_pawn_move(board, start, dest):
     >>> check_first_pawn_move(board, [6,4],[3,3])
     False
     """
-    check_str = '(pawn == "{}" and start[0] == {}) \
-                  and (dest[0] == {} or dest[0] == {}) \
-                  and start[1] == dest[1]'
-    pawn = get_figure(board, start[0], start[1])
-    if eval(check_str.format('P', 6, 5, 4)):
-        return get_figure(board, dest[0], dest[1]) == EMPTY_CELL
-    if eval(check_str.format('p', 1, 2, 3)):
-        return get_figure(board, dest[0], dest[1]) == EMPTY_CELL
-    else:
-        return False
+    return all((
+        is_pawn(board, start),
+        is_empty_cell(board, dest),
+        is_vertical_move(start, dest),
+        any((
+            is_one_cell_move(board, dest, start),
+            is_two_cell_move(board, dest, start)
+        ))
+    ))
 
 
 def check_vertical(board, coords):
@@ -143,7 +158,7 @@ def check_vertical(board, coords):
     coll = c[1]
     i = 0
     for row in board:
-        if row[coll] != '.':
+        if row[coll] != EMPTY_CELL:
             vertical[row[coll]] = [i, coll]
         i += 1
     return vertical
@@ -174,60 +189,18 @@ def check_horizontal(board, coordinate):
 
 
 def check_diagonal(board, row, column):
-
-    i = row
-    j = column
-    while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
-        i += 1
-        j += 1
-        if i == 8 or i == -1:
-            break
-        if j == 8 or j == -1:
-            break
-
-        diagonal_result1.append(get_figure(board,i,j))
-
-    i = row
-    j = column
-    while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
-        i += 1
-        j -= 1
-        if i == 8 or i == -1:
-            break
-        if j == 8 or j == -1:
-            break
-        diagonal_result2.append(get_figure(board,i,j))
-
-    i = row
-    j = column
-    while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
-        i -= 1
-        j += 1
-        if i == 8 or i == -1:
-            break
-        if j == 8 or j == -1:
-            break
-        diagonal_result3.append(get_figure(board,i,j))
-
-    i = row
-    j = column
-    while (0 <= i < BOARD_SIZE) and (0 <= j < BOARD_SIZE):
-        i -= 1
-        j -= 1
-        if i == 8 or i == -1:
-            break
-        if j == 8 or j == -1:
-            break
-        diagonal_result4.append(get_figure(board,i,j))
-
-
-    #print diagonal_result1
-    #print diagonal_result2
-    #print diagonal_result3
-    #print diagonal_result4
-
-    diagonal_result = diagonal_result1 + diagonal_result2 + diagonal_result2 + diagonal_result3
-
+    diagonal_result = []
+    steps = ((1, 1), (-1, 1), (1, -1), (-1, -1))
+    for x, y in steps:
+        i = row
+        j = column
+        while True:
+            i += x
+            j += y
+            if not 0 <= i < BOARD_SIZE and not 0 <= j < BOARD_SIZE:
+                break
+            if not is_empty_cell(board, (i, j)):
+                diagonal_result.append(get_figure(board,i,j))
     return diagonal_result
 
 
@@ -236,7 +209,7 @@ if __name__ == '__main__':
     doctest.testmod()
 
     board = create_default_position(init_board())
-
+    check_first_pawn_move(board, [6,4],[4,4])
     while True:
         print_board(board)
         action = raw_input("?")
