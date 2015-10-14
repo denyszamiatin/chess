@@ -190,7 +190,7 @@ def check_horizontal(board, coordinate):
 
 def check_diagonal(board, coordinate):
     """
-    Get figures from diagonal
+    Get figures from both diagonals
     >>> board = create_default_position(init_board())
     >>> check_diagonal(board, 'a1')
     {(6, 1): 'P', (1, 6): 'p', (0, 7): 'r'}
