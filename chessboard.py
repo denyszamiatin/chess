@@ -188,8 +188,20 @@ def check_horizontal(board, coordinate):
     return figures_on_horizontal
 
 
-def check_diagonal(board, row, column):
-    diagonal_result = []
+def check_diagonal(board, coordinate):
+    """
+    Get figures from diagonal
+    >>> board = create_default_position(init_board())
+    >>> check_diagonal(board, 'a1')
+    {(6, 1): 'P', (1, 6): 'p', (0, 7): 'r'}
+    >>> check_diagonal(board, 'e4')
+    {(0, 0): 'r', (7, 1): 'K', (6, 6): 'P', (7, 7): 'R', (6, 2): 'P', (1, 7): 'p', (1, 1): 'p'}
+    >>> check_diagonal(board, 'h7')
+    {(0, 6): 'k', (6, 2): 'P', (7, 1): 'K'}
+    """
+
+    row, column = convert_coords_to_indexes(coordinate)
+    diagonal_result = {}
     steps = ((1, 1), (-1, 1), (1, -1), (-1, -1))
     for x, y in steps:
         i = row
@@ -197,10 +209,10 @@ def check_diagonal(board, row, column):
         while True:
             i += x
             j += y
-            if not 0 <= i < BOARD_SIZE and not 0 <= j < BOARD_SIZE:
+            if not 0 <= i < BOARD_SIZE or not 0 <= j < BOARD_SIZE:
                 break
             if not is_empty_cell(board, (i, j)):
-                diagonal_result.append(get_figure(board,i,j))
+                diagonal_result[(i, j)] = (get_figure(board,i,j))
     return diagonal_result
 
 
