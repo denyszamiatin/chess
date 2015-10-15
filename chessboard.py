@@ -217,17 +217,29 @@ def check_diagonal(board, coordinate):
 
 
 def log_move(start, dest, figure, game_name='chessgame001'):
+    """
+    Writes move to a log file
+    >>> log_move('e2', 'e4', 'P')
+    'Pe2-e4 '
+    >>> log_move('g8', 'f6', 'n')
+    'ng8-f6\\n'
+    """
+
     try:
         f = open(game_name, 'w')
     except IOError:
         print "Can't open", game_name
 
     if figure in ('PRNBQKBNR'):
-        notation_white = figure, start, '-', dest, ''
-    elif figure in ('prnbqkbnr')
+        notation = figure + start + '-' + dest + ' '
+    elif figure in ('prnbqkbnr'):
+        notation = figure + start + '-' + dest + '\n'
+    else:
+        notation = 'No figure detected'
 
-    f.write()
-
+    f.write(notation)
+    f.close()
+    return notation
 
 
 if __name__ == '__main__':
