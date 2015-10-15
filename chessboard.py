@@ -48,10 +48,10 @@ def create_default_position(board):
     q - queen
     m - king
     """
-    board[0] = ['r', 'k', 'b', 'q', 'm', 'b', 'k', 'r']
+    board[0] = ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']
     board[1] = ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p']
     board[6] = ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P']
-    board[7] = ['R', 'K', 'B', 'Q', 'M', 'B', 'K', 'R']
+    board[7] = ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
 
     return board
 
@@ -173,7 +173,7 @@ def check_horizontal(board, coordinate):
     >>> check_horizontal(board, 'e3')
     {}
     >>> check_horizontal(board, 'a8')
-    {(0, 1): 'k', (0, 0): 'r', (0, 7): 'r', (0, 6): 'k', (0, 5): 'b', (0, 4): 'm', (0, 3): 'q', (0, 2): 'b'}
+    {(0, 1): 'n', (0, 0): 'r', (0, 7): 'r', (0, 6): 'n', (0, 5): 'b', (0, 4): 'k', (0, 3): 'q', (0, 2): 'b'}
     """
 
     figures_on_horizontal = {}
@@ -195,9 +195,9 @@ def check_diagonal(board, coordinate):
     >>> check_diagonal(board, 'a1')
     {(6, 1): 'P', (1, 6): 'p', (0, 7): 'r'}
     >>> check_diagonal(board, 'e4')
-    {(0, 0): 'r', (7, 1): 'K', (6, 6): 'P', (7, 7): 'R', (6, 2): 'P', (1, 7): 'p', (1, 1): 'p'}
+    {(0, 0): 'r', (7, 1): 'N', (6, 6): 'P', (7, 7): 'R', (6, 2): 'P', (1, 7): 'p', (1, 1): 'p'}
     >>> check_diagonal(board, 'h7')
-    {(0, 6): 'k', (6, 2): 'P', (7, 1): 'K'}
+    {(0, 6): 'n', (6, 2): 'P', (7, 1): 'N'}
     """
 
     row, column = convert_coords_to_indexes(coordinate)
@@ -214,6 +214,20 @@ def check_diagonal(board, coordinate):
             if not is_empty_cell(board, (i, j)):
                 diagonal_result[(i, j)] = (get_figure(board,i,j))
     return diagonal_result
+
+
+def log_move(start, dest, figure, game_name='chessgame001'):
+    try:
+        f = open(game_name, 'w')
+    except IOError:
+        print "Can't open", game_name
+
+    if figure in ('PRNBQKBNR'):
+        notation_white = figure, start, '-', dest, ''
+    elif figure in ('prnbqkbnr')
+
+    f.write()
+
 
 
 if __name__ == '__main__':
