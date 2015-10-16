@@ -2,7 +2,7 @@ BOARD_SIZE = 8
 EMPTY_CELL = '.'
 VERTICAL_NAMES = '87654321'
 HORIZONTAL_NAMES = 'abcdefgh'
-
+FIGURES = 'prnbqk'
 
 def init_board():
     """
@@ -43,10 +43,10 @@ def create_default_position(board):
     White is uppercase
     p - pawns
     r - rook
-    k - knight
+    n - knight
     b - bishop
     q - queen
-    m - king
+    k - king
     """
     board[0] = ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']
     board[1] = ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p']
@@ -142,39 +142,21 @@ def check_first_pawn_move(board, start, dest):
         ))
     ))
 
-def check_second_pawn_move(board, start,dest):
-    """Checking is all,except first move availible for a pawn
-    >>>board = create_default_position(init_board())
-    >>>check_second_pawn_move(board, [6,4],[4,4])
-    True
-    >>>check_second_pawn_move(board, [1,4],[3,4])
-    False
-    >>>check_second_pawn_move(board, [6,4],[3,3])
-    False
-    """
 
-    return all(check_first_pawn_move(board, start, dest),
-               is_one_cell_move(board, dest, start))
-
-def check_vertical(board, coords):
+def check_vertical(board, column):
     """
     Get figures from vertical
     >>> board = create_default_position(init_board())
-    >>> check_vertical(board, 'a1')
-    {'p': [1, 0], 'R': [7, 0], 'r': [0, 0], 'P': [6, 0]}
-    >>> check_vertical(board, 'c2')
-    {'p': [1, 2], 'B': [7, 2], 'b': [0, 2], 'P': [6, 2]}
+    >>> check_vertical(board, 0)
+    {(1, 0): 'p', (0, 0): 'r', (7, 0): 'R', (6, 0): 'P'}
+    >>> check_vertical(board, 2)
+    {(1, 2): 'p', (6, 2): 'P', (0, 2): 'b', (7, 2): 'B'}
     """
-    vertical = {}
-    c = convert_coords_to_indexes(coords)
-    row = c[0]
-    coll = c[1]
-    i = 0
-    for row in board:
-        if row[coll] != EMPTY_CELL:
-            vertical[row[coll]] = [i, coll]
-        i += 1
-    return vertical
+    return {
+        (row, column): get_figure(board, row, column)
+        for row in range(BOARD_SIZE)
+        if not is_empty_cell(board, (row, column))
+    }
 
 
 def check_horizontal(board, coordinate):
@@ -217,55 +199,49 @@ def check_diagonal(board, coordinate):
     diagonal_result = {}
     steps = ((1, 1), (-1, 1), (1, -1), (-1, -1))
     for x, y in steps:
-        i = row
-        j = column
+        i, j = row, column
         while True:
             i += x
             j += y
-            if not 0 <= i < BOARD_SIZE or not 0 <= j < BOARD_SIZE:
+            if not (0 <= i < BOARD_SIZE and 0 <= j < BOARD_SIZE):
                 break
             if not is_empty_cell(board, (i, j)):
-                diagonal_result[(i, j)] = (get_figure(board,i,j))
+                diagonal_result[(i, j)] = (get_figure(board, i, j))
     return diagonal_result
 
 
-def log_move(start, dest, figure, game_name='chessgame001'):
+def write_log(message, game_name='chessgame001'):
+    try:
+        with open(game_name, 'a') as f:
+            f.write(message)
+    except IOError:
+        raise
+
+
+def get_move_notation(figure, start, dest, end_character):
+    return "{}{}-{}{}".format(figure, start, dest, end_character)
+
+
+def log_move(start, dest, figure):
     """
     Writes move to a log file
     >>> log_move('e2', 'e4', 'P')
-    'Pe2-e4 '
+    'Pe2-e4\\t'
     >>> log_move('g8', 'f6', 'n')
     'ng8-f6\\n'
     """
+    if figure.lower() not in FIGURES:
+        return 'No figure detected'
+    end_character = '\t' if figure.isupper() else '\n'
+    return get_move_notation(figure, start, dest, end_character)
 
-    try:
-        f = open(game_name, 'w')
-    except IOError:
-        print "Can't open", game_name
 
-    if figure in ('PRNBQKBNR'):
-        notation = figure + start + '-' + dest + ' '
-    elif figure in ('prnbqkbnr'):
-        notation = figure + start + '-' + dest + '\n'
-    else:
-        notation = 'No figure detected'
-
-    f.write(notation)
-    f.close()
-    return notation
-
-def try_move_a_pawn(board,start_move,dest_move):
-
+def try_move_a_pawn(board, start_move, dest_move):
     start = convert_coords_to_indexes(start_move)
     dest = convert_coords_to_indexes(dest_move)
-    if check_second_pawn_move (board, start,dest) or check_first_pawn_move(board, start, dest):
-
-
-        board [dest[0][dest[1]]] = board [start[0][start[1]]]
-        board [start[0][start[1]]] = EMPTY_CELL
-        current_battle_board = board
-
-    return current_battle_board
+    if check_first_pawn_move(board, start, dest):
+        board[dest[0][dest[1]]] = board[start[0][start[1]]]
+        board[start[0][start[1]]] = EMPTY_CELL
 
 
 if __name__ == '__main__':
