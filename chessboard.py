@@ -194,7 +194,6 @@ def check_diagonal(board, coordinate):
     >>> check_diagonal(board, 'h7')
     {(0, 6): 'n', (6, 2): 'P', (7, 1): 'N'}
     """
-
     row, column = convert_coords_to_indexes(coordinate)
     diagonal_result = {}
     steps = ((1, 1), (-1, 1), (1, -1), (-1, -1))
