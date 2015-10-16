@@ -142,6 +142,19 @@ def check_first_pawn_move(board, start, dest):
         ))
     ))
 
+def check_second_pawn_move(board, start,dest):
+    """Checking is all,except first move availible for a pawn
+    >>>board = create_default_position(init_board())
+    >>>check_second_pawn_move(board, [6,4],[4,4])
+    True
+    >>>check_second_pawn_move(board, [1,4],[3,4])
+    False
+    >>>check_second_pawn_move(board, [6,4],[3,3])
+    False
+    """
+
+    return all(check_first_pawn_move(board, start, dest),
+               is_one_cell_move(board, dest, start))
 
 def check_vertical(board, coords):
     """
@@ -240,6 +253,19 @@ def log_move(start, dest, figure, game_name='chessgame001'):
     f.write(notation)
     f.close()
     return notation
+
+def try_move_a_pawn(board,start_move,dest_move):
+
+    start = convert_coords_to_indexes(start_move)
+    dest = convert_coords_to_indexes(dest_move)
+    if check_second_pawn_move (board, start,dest) or check_first_pawn_move(board, start, dest):
+
+
+        board [dest[0][dest[1]]] = board [start[0][start[1]]]
+        board [start[0][start[1]]] = EMPTY_CELL
+        current_battle_board = board
+
+    return current_battle_board
 
 
 if __name__ == '__main__':
