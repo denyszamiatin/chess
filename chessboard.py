@@ -77,6 +77,25 @@ def is_white(board, cell):
 def is_black(board, cell):
     return get_figure(board, cell[0], cell[1]).islower()
 
+def is_opposite_color_figure(board, start, dest):
+    """
+    Returns True if figures are of an opposite colors
+    >>> board = create_default_position(init_board())
+    >>> is_opposite_color_figure(board, [1,1],[1,2])
+    False
+    >>> is_opposite_color_figure(board, [1,1],[7,7])
+    True
+    >>> is_opposite_color_figure(board, [1,1],[4,4])
+    False
+    """
+    if is_empty_cell(board, start) or is_empty_cell(board, dest):
+        return False
+    elif is_white(board, start) == is_white(board, dest) or is_black(board, start) == is_black(board, dest):
+        return False
+    else:
+        return True
+
+
 
 def get_pawn_direction (board, cell):
     """
@@ -92,7 +111,6 @@ def is_pawn(board, dest):
 
 def is_empty_cell(board, dest):
     return get_figure(board, dest[0], dest[1]) == EMPTY_CELL
-
 
 def is_vertical_move(start, dest):
     return start[1] == dest[1]
@@ -235,7 +253,6 @@ def try_move_a_pawn(board, start_move, dest_move):
     if check_first_pawn_move(board, start, dest):
         board[dest[0][dest[1]]] = board[start[0][start[1]]]
         board[start[0][start[1]]] = EMPTY_CELL
-
 
 if __name__ == '__main__':
     import doctest
