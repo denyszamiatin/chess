@@ -159,28 +159,22 @@ def check_vertical(board, column):
     }
 
 
-def check_horizontal(board, coordinate):
+def check_horizontal(board, row):
     """
     Get figures from horizontal
     >>> board = create_default_position(init_board())
-    >>> check_horizontal(board, 'e2')
+    >>> check_horizontal(board, 6)
     {(6, 4): 'P', (6, 7): 'P', (6, 6): 'P', (6, 1): 'P', (6, 0): 'P', (6, 3): 'P', (6, 2): 'P', (6, 5): 'P'}
-    >>> check_horizontal(board, 'e3')
+    >>> check_horizontal(board, 4)
     {}
-    >>> check_horizontal(board, 'a8')
+    >>> check_horizontal(board, 0)
     {(0, 1): 'n', (0, 0): 'r', (0, 7): 'r', (0, 6): 'n', (0, 5): 'b', (0, 4): 'k', (0, 3): 'q', (0, 2): 'b'}
     """
-
-    figures_on_horizontal = {}
-    row, column = convert_coords_to_indexes(coordinate)
-
-    for column in range(0, BOARD_SIZE):
-        figure = get_figure(board, row, column)
-
-        if figure != '.':
-            figures_on_horizontal[(row, column)] = figure
-
-    return figures_on_horizontal
+    return {
+        (row, column): get_figure(board, row, column)
+        for column in range(BOARD_SIZE)
+        if not is_empty_cell(board, (row, column))
+        }
 
 
 def check_diagonal(board, coordinate):
@@ -248,7 +242,7 @@ if __name__ == '__main__':
     doctest.testmod()
 
     board = create_default_position(init_board())
-    check_first_pawn_move(board, [6,4],[4,4])
+
     while True:
         print_board(board)
         action = raw_input("?")
