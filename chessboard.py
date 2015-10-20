@@ -160,6 +160,34 @@ def check_first_pawn_move(board, start, dest):
         ))
     ))
 
+def check_pawn_capture_move(board, start, dest):
+    """
+    Checks if pawn capture move is valid
+    >>> board = create_default_position(init_board())
+    >>> check_pawn_capture_move(board, [2,2], [1,1])
+    True
+    >>> check_pawn_capture_move(board, [6,2], [6,3])
+    True
+    >>> check_pawn_capture_move(board, [6,2], [6,1])
+    True
+    """
+
+    if is_white(board, start):
+        steps = ((1, 1), (1, -1))
+    elif is_black(board, start):
+        steps = ((-1, 1), (-1, -1))
+    else:
+        raise ValueError("No figure")
+
+    for i, j in steps:
+        if dest[0] == start[0] + i and dest[1] == start[1] + j:
+            resalt = True
+        else:
+            resalt = False
+    return resalt
+
+
+
 
 def check_vertical(board, column):
     """
