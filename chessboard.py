@@ -259,7 +259,7 @@ def try_move_a_pawn(board, start_move, dest_move):
 
 
 if __name__ == '__main__':
-    """ uncommented this for test web
+    """ uncommented this for test www
         from app import app
         app.run(debug = True)
     """
