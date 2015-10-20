@@ -90,10 +90,9 @@ def is_opposite_color_figure(board, start, dest):
     """
     if is_empty_cell(board, start) or is_empty_cell(board, dest):
         return False
-    elif is_white(board, start) == is_white(board, dest) or is_black(board, start) == is_black(board, dest):
+    if is_white(board, start) == is_white(board, dest) or is_black(board, start) == is_black(board, dest):
         return False
-    else:
-        return True
+    return True
 
 
 
@@ -164,27 +163,22 @@ def check_pawn_capture_move(board, start, dest):
     """
     Checks if pawn capture move is valid
     >>> board = create_default_position(init_board())
-    >>> check_pawn_capture_move(board, [2,2], [1,1])
+    >>> check_pawn_capture_move(board, [1,1], [2,0])
     True
-    >>> check_pawn_capture_move(board, [6,2], [6,3])
+    >>> check_pawn_capture_move(board, [6,2], [5,3])
     True
-    >>> check_pawn_capture_move(board, [6,2], [6,1])
+    >>> check_pawn_capture_move(board, [6,2], [5,1])
     True
     """
+    if not is_pawn(board, start):
+        raise ValueError
 
-    if is_white(board, start):
-        steps = ((1, 1), (1, -1))
-    elif is_black(board, start):
-        steps = ((-1, 1), (-1, -1))
-    else:
-        raise ValueError("No figure")
+    steps = ((-1, 1), (-1, -1)) if is_white(board, start) else ((1, 1), (1, -1))
 
     for i, j in steps:
         if dest[0] == start[0] + i and dest[1] == start[1] + j:
-            resalt = True
-        else:
-            resalt = False
-    return resalt
+            return True
+    return False
 
 
 
@@ -283,10 +277,12 @@ def try_move_a_pawn(board, start_move, dest_move):
         board[start[0][start[1]]] = EMPTY_CELL
 
 if __name__ == '__main__':
+
     import doctest
     doctest.testmod()
 
     board = create_default_position(init_board())
+
 
     while True:
         print_board(board)
