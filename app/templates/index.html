@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <Head>
-      <Title>Game with me!</Title>
+      <title>Game with me!</title>
     <style>
         td.white {background-color:white;color:black;}
         td.black {background-color:black;color:white;}
@@ -18,10 +18,14 @@
                 {% endfor %}
             </tr>
             {% endfor %}
-
+          </table>
         </td>
     </tr>
     </table>
+        <form action="/move">
+            <input type="text" name="move" />
+            <input type="submit" />
+        </form>
 </html>
 
 

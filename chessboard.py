@@ -77,6 +77,7 @@ def is_white(board, cell):
 def is_black(board, cell):
     return get_figure(board, cell[0], cell[1]).islower()
 
+
 def is_opposite_color_figure(board, start, dest):
     """
     Returns True if figures are of an opposite colors
