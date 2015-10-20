@@ -160,6 +160,32 @@ def check_first_pawn_move(board, start, dest):
         ))
     ))
 
+def check_pawn_capture_name(board, start, dest):
+    """
+    Checks if pawn capture move is valid
+    >>> board = create_default_position(init_board())
+    >>> check_pawn_capture_name(board, [2,2], [1,1])
+    True
+    >>> check_pawn_capture_name(board, [6,2], [6,3])
+    True
+    >>> check_pawn_capture_name(board, [6,2], [6,1])
+    True
+    """
+
+    if is_white(board, start):
+        steps = ((1, 1), (1, -1))
+    elif is_black(board, start):
+        steps = ((-1, 1), (-1, -1))
+    else:
+        raise ValueError("No figure")
+
+    for i, j in steps:
+        if dest[0] == start[0] + i and dest[1] == start[1] + j:
+            resalt = True
+        else:
+            resalt = False
+    return resalt
+
 
 def check_vertical(board, column):
     """
@@ -253,6 +279,14 @@ def try_move_a_pawn(board, start_move, dest_move):
     if check_first_pawn_move(board, start, dest):
         board[dest[0][dest[1]]] = board[start[0][start[1]]]
         board[start[0][start[1]]] = EMPTY_CELL
+
+def capture_pawn (board, start, dest):
+    return all((
+            is_pawn(board, start),
+            is_opposite_color_figure(board, start, dest),
+            check_pawn_capture_name()
+            ))
+
 
 if __name__ == '__main__':
     import doctest
