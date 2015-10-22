@@ -37,6 +37,7 @@ def convert_coords_to_indexes(coordinate):
         raise ValueError("Invalid coords")
 
 
+
 def create_default_position(board):
     """
     Set up chess board
@@ -182,8 +183,6 @@ def check_pawn_capture_move(board, start, dest):
     return False
 
 
-
-
 def check_vertical(board, column):
     """
     Get figures from vertical
@@ -276,6 +275,38 @@ def try_move_a_pawn(board, start_move, dest_move):
     if check_first_pawn_move(board, start, dest):
         board[dest[0][dest[1]]] = board[start[0][start[1]]]
         board[start[0][start[1]]] = EMPTY_CELL
+
+def capture_with_pawn (board, start_coord, dest_coord):
+    """
+    Captures figure with a pawn. Returns captured figure.
+    >>> board = create_default_position(init_board())
+    >>> board[2] = ['P', EMPTY_CELL, 'p', EMPTY_CELL, 'p', EMPTY_CELL, EMPTY_CELL, EMPTY_CELL]
+    >>> board[3] = [EMPTY_CELL, 'P', EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL]
+    >>> capture_with_pawn(board, 'a6', 'b7')
+    'p'
+    >>> capture_with_pawn(board, 'c6', 'b5')
+    'P'
+    >>> capture_with_pawn(board, 'c6', 'd5')
+    '.'
+    >>> capture_with_pawn(board, 'a6', 'b5')
+    '0'
+    >>> capture_with_pawn(board, 'c6', 'b7')
+    '0'
+    """
+        #below board modification if for test purpeses
+    board[2] = ['P', EMPTY_CELL, 'p', EMPTY_CELL, 'p', EMPTY_CELL, EMPTY_CELL, EMPTY_CELL]
+    board[3] = [EMPTY_CELL, 'P', EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL, EMPTY_CELL]
+
+    captured_figure = '0'
+    start = convert_coords_to_indexes(start_coord)
+    dest = convert_coords_to_indexes(dest_coord)
+
+    if check_pawn_capture_move(board, start, dest):
+        captured_figure = get_figure(board, dest[0], dest[1])
+        board[dest[0]][dest[1]] == board[start[0]][start[1]]
+        board[start[0]][start[1]] == EMPTY_CELL
+    return captured_figure
+
 
 if __name__ == '__main__':
 
