@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html5>
 <html>
 <Head>
       <title>Game with me!</title>
@@ -10,7 +10,7 @@
     <table border="5">
     <tr valign="top">
         <td>
-          <table style="width:200">
+          <table style="width:180;">
               {% for i in range(8) %}
                     {% if i % 2 == 0 %}
                           <tr>
@@ -34,6 +34,7 @@
             <input type="text" name="move" />
             <input type="submit" />
         </form>
-</html>
+          <h1>{{logs}}</h1>
+    </html>
 
 

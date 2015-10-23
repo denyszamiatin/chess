@@ -274,8 +274,11 @@ def try_move_a_pawn(board, start_move, dest_move):
     start = convert_coords_to_indexes(start_move)
     dest = convert_coords_to_indexes(dest_move)
     if check_first_pawn_move(board, start, dest):
-        board[dest[0][dest[1]]] = board[start[0][start[1]]]
-        board[start[0][start[1]]] = EMPTY_CELL
+        print start[0], dest[0]
+        board[dest[0]][dest[1]] = board[start[0]][start[1]]
+        board[start[0]][start[1]] = EMPTY_CELL
+    return board
+
 
 if __name__ == '__main__':
 
@@ -283,8 +286,6 @@ if __name__ == '__main__':
     doctest.testmod()
 
     board = create_default_position(init_board())
-
-
     while True:
         print_board(board)
         action = raw_input("?")
