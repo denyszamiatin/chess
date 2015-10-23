@@ -11,13 +11,21 @@
     <tr valign="top">
         <td>
           <table style="width:200">
-              {% for row in board %}
-            <tr>
-                {% for cell in row %}
-                <td class ="{{ loop.cycle('black', 'white') }}">{{cell}}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
+              {% for i in range(8) %}
+                    {% if i % 2 == 0 %}
+                          <tr>
+                          {% for cell in board[i] %}
+                          <td class ="{{ loop.cycle('white','black') }}">{{cell}}</td>
+                              {% endfor %}
+                          </tr>
+                    {% else %}
+                            <tr>
+                          {% for cell in board[i] %}
+                          <td class ="{{ loop.cycle('black','white') }}">{{cell}}</td>
+                              {% endfor %}
+                          </tr>
+                    {% endif %}
+              {% endfor %}
           </table>
         </td>
     </tr>
